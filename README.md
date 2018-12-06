@@ -594,12 +594,3 @@ The Boxplot actually shows there are outliers here
          tauIO <- resid / sigma
 
          
-
-There is a lot of interested packges and formulas in R and even MOA where I can show stream data but 
-you need to instal MOA-GUI visualisation toll for real time stream and WEKA on your computer to make my code on R work.
-Please, go look at the other my pages with models of Anomaly Detection and amazing plots
-https://github.com/IrinaMax/CPU-usage-and-anomaly-detection/blob/master/Anomaly%20Detection%20with%20Arima%20model
-and https://github.com/IrinaMax/CPU-usage-and-anomaly-detection/blob/master/Anomaly%20detection
-and https://github.com/IrinaMax/CPU-usage-and-anomaly-detection/blob/master/MCLUST%20clustering%20analysis%20and%20visualisation
-and https://github.com/IrinaMax/CPU-usage-and-anomaly-detection/blob/master/More%20exporatory%20and%20anomaly%20detection
-and https://github.com/IrinaMax/CPU-usage-and-anomaly-detection/blob/master/SparkR%20on%20sql.Context
