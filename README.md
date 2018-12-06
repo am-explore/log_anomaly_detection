@@ -1,4 +1,4 @@
-# CPU-usage-and-anomaly-detection
+# Log-data-and-anomaly-detection
 ![rplot_anom_cpu_3600](https://cloud.githubusercontent.com/assets/16123495/19879905/18d7fd52-9fb5-11e6-8b74-aadac1c68671.png)
     
 ---
