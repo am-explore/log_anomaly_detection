@@ -2,15 +2,15 @@
 ![rplot_anom_cpu_3600](https://cloud.githubusercontent.com/assets/16123495/19879905/18d7fd52-9fb5-11e6-8b74-aadac1c68671.png)
     
 ---
-title: "Anomaly Detection of CPU Utilisation"
-author: "Irina Max"
-date: September 14 2016
+title: "Anomaly Detection of Log Data"
      
 ---
-My work with the 2 GB data set of cpu usage on local R studio.
-I begun with exploratory of the data set and couple of pages different models of my dynamic option and also automatic anomaly detection in time series data. The goal of this script is to get an overview of the characteristics and usage of the cpu in the data.csv. The dataset is very huge and not easy to work with at R studio, so I used couple technique to download it and try to work with it.
-Visualisation possible to implement just with chunk of the random of the data, which absolutely normally to use to describe the data behavior.
-My study show that data is not normally distributed and the p-value is significant. I also try different method to upload huge data in R studio and work with it. 
+Local work on a desktop R version, using log data over 2 GB of size.
+
+Step 1 : EDA began with data profiling and study, while the data was large - had to break the csv into smaller files to study patterns befoe proceeding with analysis and discovery.
+
+Indications suggest that the data is skewed and we have a heavy round of cleaning before basic analysis begins. 
+
 Library pryr has a method to change memory of Rstudio, but it’s still not enough to work with this data
 
     library (data.table)
@@ -32,7 +32,7 @@ user  system elapsed
 
      print(object.size(SQLf), units="Mb")  ## to see the size of the data
      
-The data size is 1.97G, but after I used SQL context size of the data distributed in SQL 700.1 Mb    
+Post scripting in SQL made the overall data to 700.1 Mb    
     
          require(data.table)
         system.time(DT <- fread("data.csv"))  ## how long time will be read fread function
@@ -58,8 +58,9 @@ The data size is 1.97G, but after I used SQL context size of the data distribute
               ##61176887 1537577313 0.4229254
         dim(h) 
        [1] 61176887        2    
-We can see the observation : its 61176887 rows and 2 colomns and I guess it time by  every second.
-Let's look how long data was taken  61176887/60/60/24/365 =1.9 year so, its almost 2 year data was taken by every second of CPU usage.  
+We can see the observation : its 61,176,887 rows and 2 colomns and seems like second based data
+
+Approximately 2 years worth of data, recorded every second  
          
          'data.frame':	61176887 obs. of  2 variables:
          $ time     : int  1476400427 1476400428 1476400429 1476400430 1476400431 1476400432 1476400433 1476400434 1476400435 1476400436 ...
@@ -75,7 +76,8 @@ Let's look how long data was taken  61176887/60/60/24/365 =1.9 year so, its almo
            Mean   :1.507e+09   Mean   : 0.5003  
            3rd Qu.:1.522e+09   3rd Qu.: 0.5677  
            Max.   :1.538e+09   Max.   : 1.0347  
-Summary show the Min CPU used for 3% and Max is more then 103% with already said it is anomaly. Median and Mean is almost the same value.
+
+Summary show the Min CPU used for 3% and Max is more then 103% looks like anomalies. Median and Mean is almost the same value.
            
          hist (h$cpu_usage) 
   ![hist_1_cpuusage](https://cloud.githubusercontent.com/assets/16123495/19879931/740c7284-9fb5-11e6-9821-4695f9863baf.png)
@@ -107,7 +109,7 @@ mean is 50% and it is obviouse, we will find this value again in the t-test in c
            -5.357000 -0.674000 -0.001797  0.000000  0.671100  5.321000 
 
 A technique for detecting anomalies in seasonal univariate time series where the input is a series of <timestamp, count> pairs.
-Data is roughly normally distributed but I reject Zero Hypothesis. The p-value is significant and it's Alternative Hypothesis.
+The p-value is significant and it's Alternative Hypothesis.
 Here can be 95% confidence that the mean of the CPU utilization of this dataset between 50.02 and 50.03 percent, or most of the time CPU was used around 50% or so.
           
         t.test(h$cpu_usage )
@@ -125,7 +127,7 @@ Here can be 95% confidence that the mean of the CPU utilization of this dataset 
 The avarage usage of the CPU is 50% and its resonable value.
 Model1 base on the dinamic quantiles and outliers usually has proportion < .15
 
-I am going to find anomalys as outliers by counting quantiles and dynamiclly find location of them 
+I am going to find anomalies as outliers by counting quantiles and dynamiclly find location of them 
 and play with time series package
 
         s <- ts(h[,2], start = 1476400427, end= 1537577313, frequency = 1 )
@@ -164,7 +166,7 @@ and play with time series package
         #3rd Qu.:1.522e+09   3rd Qu.: 0.7989  
         #Max.   :1.538e+09   Max.   : 1.0347 
 
-####We have have 466558 anomaly detection in this cpu data set.
+####We have have 466558 anomaly detection in this log data set.
 
 I am going to show visualisation on the sample because the dataset it too big to implement all graph.
 
